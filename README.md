@@ -28,7 +28,7 @@ A secure and scalable backend system for a file drive/storage app built with Nod
 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/drive-backend.git
+git clone https://github.com/MuhammadMaaz2001/drive_backend.git
 cd drive-backend
 Install dependencies
 
