@@ -64,6 +64,11 @@ Endpoint	Method	Description
 /api/files/upload	POST	Upload a file (Auth required)
 /api/files	GET	List user’s uploaded files
 /api/files/:id	DELETE	Delete a file by ID (Auth required)
+/api/folders	POST	Create Folder (Auth required)
+/api/folders	GET	List of All folders
+/api/folders/:id	GET Filter a folder by ID (Auth required)
+
+
 /api/activity	GET	Get user's activity logs
 🛡️ Note: All /api/files and /api/activity routes require Bearer JWT token in headers.
 
