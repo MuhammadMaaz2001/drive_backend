@@ -4,7 +4,7 @@ A secure and scalable backend system for a file drive/storage app built with Nod
 
 ---
 
-## ⚙️ Tech Stack
+ ⚙️ Tech Stack
 
 - Backend: Node.js, Express
 - Database: MongoDB (Mongoose ODM)
@@ -14,7 +14,7 @@ A secure and scalable backend system for a file drive/storage app built with Nod
 
 ---
 
-## 📁 Project Structure
+ 📁 Project Structure
 
 /backend ├── src │ ├── controllers │ ├── middleware │ ├── models │ ├── routes │ ├── utils │ └── app.js ├── .env └── package.json
 
@@ -23,7 +23,7 @@ A secure and scalable backend system for a file drive/storage app built with Nod
 
 ---
 
-## 🚀 Installation & Setup
+ 🚀 Installation & Setup
 
 1. Clone the repository
 
@@ -56,53 +56,90 @@ bash
 npm run dev
 The server will run at: http://localhost:5000
 
-👤 User APIs
+# 📘 API Documentation – File Management System
 
-Endpoint	Method	Description
-/api/auth/register	POST	Register a new user
-/api/auth/login	POST	Login and receive JWT token
-/api/files/upload	POST	Upload a file (Auth required)
-/api/files	GET	List user’s uploaded files
-/api/files/:id	DELETE	Delete a file by ID (Auth required)
-/api/folders	POST	Create Folder (Auth required)
-/api/folders	GET	List of All folders
-/api/folders/:id	GET Filter a folder by ID (Auth required)
+This backend provides secure REST APIs for user management, file uploads, folder creation, and admin control. JWT-based authentication is used throughout.
+
+---
+
+ 👤 User APIs
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/users/register` | `POST` | Register a new user |
+| `/api/users/login` | `POST` | Login and receive JWT token |
+| `/api/users/logout` | `GET` | Logout the current user |
+| `/api/users/forgot-password` | `POST` | Send password reset link to email |
+| `/api/users/reset-password/:token` | `POST` | Reset password using token |
+| `/api/users/change-password` | `POST` | Change password (Auth required) |
+| `/api/users/make-admin/:userId` | `POST` | Promote a user to admin (Auth required) |
+
+---
+
+ 📁 File APIs
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/files/upload` | `POST` | Upload a file (Auth required, `form-data: file`) |
+| `/api/files/search` | `GET` | Search files by query |
+| `/api/files/:fileId` | `DELETE` | Delete file by ID |
+
+> 🔒 All file upload/delete routes require authentication.
+
+---
+
+ 📂 Folder APIs
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/folders` | `POST` | Create a new folder (Auth required) |
+| `/api/folders` | `GET` | List all folders |
+| `/api/folders/:folderId` | `GET` | Get a folder by ID |
+
+---
+Authorization: Bearer <your_token>
+
+---
+
+ 🛡️ Admin APIs
+
+> All admin routes require:
+> - Logged-in user
+> - Role: `admin`
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/admin/users` | `GET` | Get all registered users |
+| `/api/admin/users/:userId/files` | `GET` | Get all files uploaded by a specific user |
+| `/api/admin/logs` | `GET` | View all user activity logs (uploads/deletes) |
+
+---
+
+ 📦 File Upload Details
+
+- Endpoint: `POST /api/files/upload`
+- Content-Type: `multipart/form-data`
+- Field Name: `file`
+- Storage: Uploaded files are saved to Cloudinary and MongoDB.
 
 
-/api/activity	GET	Get user's activity logs
-🛡️ Note: All /api/files and /api/activity routes require Bearer JWT token in headers.
 
-🔐 Admin APIs
-All Admin APIs require:
+ 🧠 Frontend Integration Notes
 
-Authenticated user
-
-User role must be "admin"
+- Store the JWT token after login (localStorage or cookies).
+- Include `Authorization` header on all protected routes.
+- Use `/api/files/search` for implementing file filters.
+- Admins can monitor uploads via `/api/admin/logs`.
 
 
-Endpoint	Method	Description
-/api/admin/users	GET	List all registered users
-/api/admin/users/:userId/files	GET	View all files uploaded by a specific user
-/api/admin/logs	GET	View all activity logs (uploads/deletions)
-🔄 API Behavior
-🔐 JWT Authentication
-Every authenticated route checks for a valid JWT token.
-
-Include the token in the request headers:
-
-http
 
 
-Authorization: Bearer <token>
-📁 File Uploads
-Endpoint: POST /api/files/upload
 
-Multipart/form-data required using field name file
+ 🔐 Authentication Notes
 
-Uploads are stored in Cloudinary and saved in MongoDB
+All protected routes require a valid JWT token.
 
-📜 Activity Logs
-Each upload and delete action by a user is recorded in the ActivityLog collection.
+# Header Format:
 
 📦 Major Packages Used
 
